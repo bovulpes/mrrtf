@@ -1,0 +1,13 @@
+Host wn1
+     HostName 172.17.5.7
+     User centos
+     IdentityFile ~/.ssh/cc-vulpescu.pem
+Host wn2
+     HostName 172.17.5.8
+     User centos
+     IdentityFile ~/.ssh/cc-vulpescu.pem
+Host wn3
+     HostName 172.17.5.9
+     User centos
+     IdentityFile ~/.ssh/cc-vulpescu.pem
+
