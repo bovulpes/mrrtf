@@ -1,0 +1,51 @@
+<topology id="ExampleDDS">
+
+    <property id="data1" />
+    <property id="data2" />
+
+    <declrequirement id="SamplerWorker">
+        <hostPattern type="wnname" value="sampler"/>
+    </declrequirement>
+
+    <declrequirement id="ProcessorWorker">
+        <hostPattern type="wnname" value="processor"/>
+    </declrequirement>
+
+    <declrequirement id="SinkWorker">
+        <hostPattern type="wnname" value="sink"/>
+    </declrequirement>
+
+    <decltask id="Sampler">
+        <exe reachable="true">/home/centos/alfa/test/dds/ex3/ex3-sampler --id sampler --log-color false --control /opt/sw/FairSoft/FairRoot/build_for_alfa/lib/libFairMQDDSControlPlugin.so --config /opt/sw/FairSoft/FairRoot/build_for_alfa/lib/libFairMQDDSConfigPlugin.so --mq-config /home/centos/alfa/test/dds/ex3/ex3-dds.json</exe>
+<!--        <requirement>SamplerWorker</requirement> -->
+        <properties>
+            <id access="write">data1</id>
+        </properties>
+    </decltask>
+
+    <decltask id="Processor">
+        <exe reachable="true">/home/centos/alfa/test/dds/ex3/ex3-processor --id processor_%taskIndex% --config-key processor --log-color false --control /opt/sw/FairSoft/FairRoot/build_for_alfa/lib/libFairMQDDSControlPlugin.so --config /opt/sw/FairSoft/FairRoot/build_for_alfa/lib/libFairMQDDSConfigPlugin.so --mq-config /home/centos/alfa/test/dds/ex3/ex3-dds.json</exe>
+<!--        <requirement>ProcessorWorker</requirement> -->
+        <properties>
+            <id access="read">data1</id>
+            <id access="read">data2</id>
+        </properties>
+    </decltask>
+
+    <decltask id="Sink">
+        <exe reachable="true">/home/centos/alfa/test/dds/ex3/ex3-sink --id sink --log-color false --control /opt/sw/FairSoft/FairRoot/build_for_alfa/lib/libFairMQDDSControlPlugin.so --config /opt/sw/FairSoft/FairRoot/build_for_alfa/lib/libFairMQDDSConfigPlugin.so --mq-config /home/centos/alfa/test/dds/ex3/ex3-dds.json</exe>
+<!--        <requirement>SinkWorker</requirement> -->
+        <properties>
+            <id access="write">data2</id>
+        </properties>
+    </decltask>
+
+    <main id="main">
+        <task>Sampler</task>
+        <task>Sink</task>
+        <group id="ProcessorGroup" n="2">
+            <task>Processor</task>
+        </group>
+    </main>
+
+</topology>
